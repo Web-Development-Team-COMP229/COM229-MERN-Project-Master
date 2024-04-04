@@ -7,11 +7,11 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: `http://localhost:${PORT}`,
+                target: `https://com229-mern-project-master.onrender.com`,
                 changeOrigin: true,
             },
             '/auth': {
-                target: `http://localhost:${PORT}`,
+                target: `https://com229-mern-project-master.onrender.com`,
                 changeOrigin: true,
             },
         },
@@ -20,7 +20,7 @@ export default defineConfig({
     build: {
         manifest: true,
         rollupOptions: {
-            input: "./src/main.jsx",
+            input: ["./src/main.jsx", './index.html'],
         },
     },
 });
