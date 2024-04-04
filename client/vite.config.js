@@ -7,11 +7,11 @@ export default defineConfig({
     server: {
         proxy: {
             '/api': {
-                target: `https://com229-mern-project-master.onrender.com`,
+                target: `http://localhost:${PORT}`,
                 changeOrigin: true,
             },
             '/auth': {
-                target: `https://com229-mern-project-master.onrender.com`,
+                target: `http://localhost:${PORT}`,
                 changeOrigin: true,
             },
         },

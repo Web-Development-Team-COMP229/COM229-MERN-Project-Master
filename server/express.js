@@ -22,7 +22,6 @@ var whitelist = ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://local
 var corsOptions = {
     credentials: true,
     origin: function(origin, callback) {
-      console.log("<---- origin: " + origin)
       // if (whitelist.indexOf(origin) !== -1) {
         callback(null, true)
       // } else {
