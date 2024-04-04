@@ -15,6 +15,7 @@ import moment from 'moment';
 import { TextFieldBlue } from '../component/customstyle/CustomStyledTextField.jsx'
 import ButtonMainTheme from '../component/button/ButtonMainTheme.jsx'
 import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -66,6 +67,7 @@ export default function Create() {
     //console.log(auth);
     //console.log(jwt);
     const classes = useStyles()
+    const navigate = useNavigate();
     const { userId } = useParams();
     const [values, setValues] = useState({
         apply_user_id: jwt.user._id,
@@ -88,6 +90,7 @@ export default function Create() {
 
     const handleClose = () => {
         setOpen(false);
+        navigate("/user/"+ (auth.isAuthenticated()  ? auth.isAuthenticated().user._id : ''));
     };
 
     const handleOpen = () => {
@@ -180,10 +183,10 @@ export default function Create() {
                     
                     </DialogContentText>
                     <hr />
-                    <TextFieldBlue variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    <TextFieldBlue variant="outlined" fullWidth margin='dense' disabled={true} style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
                         label={"Who"} value={values.apply_user}/>
                     
-                    <TextFieldBlue  variant="outlined" fullWidth margin='dense' style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
+                    <TextFieldBlue  variant="outlined" fullWidth margin='dense' disabled={true} style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
                         label={"When"} value={moment(values.appointment_date).format('DD/MMM/YYYY')}/>
                     <hr />
                     <br/>
