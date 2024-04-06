@@ -135,16 +135,16 @@ export default function Appointment() {
       var appointmentsCollection = [];
       data.forEach(function (item) {
         var appoi = {
-          title: "You have a dental ppointment",
+          title: "Appointment Schedule",
           startDate: new Date(item.appointment_date),
           endDate: new Date(item.appointment_date),
           id: item._id,
         };
-        var hoursToAdd = 15 * 60 * 60 * 1000;
-        appoi.startDate.setTime(appoi.startDate.getTime() + hoursToAdd);
-        hoursToAdd = 16 * 60 * 60 * 1000;
-        appoi.endDate.setTime(appoi.endDate.getTime() + hoursToAdd);
-
+        var StarthoursToAdd = 15 * 60 * 60 * 1000;
+        appoi.startDate.setTime(appoi.startDate.getTime() + StarthoursToAdd);
+        var EndhoursToAdd = 16 * 60 * 60 * 1000;
+        appoi.endDate.setTime(appoi.endDate.getTime() + EndhoursToAdd);
+        appoi.title = "Denatal Appointment 3:00 PM - 4:00 PM";
         appointmentsCollection.push(appoi);
       });
       setAppointments(appointmentsCollection);
