@@ -20,15 +20,17 @@ const create = async (req, res) => {
 }
 const list = async (req, res) => {
     try {
+  
         let queryAry = {};
-        if (req.query.apply_user){
-            queryAry["apply_user"] = req.query.apply_user;
+        if (req.query.userId){
+            queryAry["apply_user"] = req.query.userId;
         }
-        if (req.query.apply_user_id){
-            queryAry["apply_user_id"] = req.query.apply_user_id;
+        if (req.query.userId){
+            queryAry["apply_user_id"] = req.query.userId;
         }
 
-        let appointments = await Appointment.find(queryAry).select('apply_user_id apply_user appointment_date is_active');
+        //let appointments = await Appointment.find(queryAry).select('apply_user_id apply_user appointment_date is_active');
+        let appointments = await Appointment.find({"apply_user_id":req.query.userId});
         res.json(appointments);
     } catch (err) {
         return res.status(400).json({
@@ -38,6 +40,7 @@ const list = async (req, res) => {
 }
 const appointmentByID = async (req, res, next, id) => {
     try {
+        debugger;
         let appointment = await Appointment.findById(id)
         if (!appointment)
             return res.status('400').json({
@@ -72,11 +75,11 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
     try {
-        console.log(remove);
+        
         let appointment = req.profile
         let deletedAppointment = await appointment.deleteOne()
-       
-        res.json(deletedAppointment)
+        console.log(deletedAppointment)
+        return res.json({id:req.profile})
     } catch (err) {
         return res.status(400).json({
             error: errorHandler.getErrorMessage(err)

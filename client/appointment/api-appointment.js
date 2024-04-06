@@ -18,7 +18,7 @@ const create = async (appointment, credentials) => {
 }
 const list = async (signal, credentials) => {
     try {
-        let response = await fetch('/api/appointment/', {
+        let response = await fetch('/api/appointment/?userId=' + credentials.userId, {
             method: 'GET',
             signal: signal,
             headers: {
@@ -66,7 +66,8 @@ const update = async (params, credentials, appointment) => {
 }
 const remove = async (params, credentials) => {
     try {
-        let response = await fetch('/api/appointment/' + params.appointmentid, {
+        
+        let response = await fetch('/api/appointment/' + params.deleted, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',

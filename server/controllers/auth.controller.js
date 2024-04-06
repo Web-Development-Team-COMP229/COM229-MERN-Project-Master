@@ -5,6 +5,9 @@ import { expressjwt } from "express-jwt";
 //import expressJwt from 'express-jwt'
 //import config from './../../config/config'
 import config from './../../config/config.js'
+import Appointment from '../models/appointment.model.js';
+import extend from 'lodash/extend.js';
+import errorHandler from './error.controller.js';
 
 
 const signin = async (req, res) => {
@@ -45,8 +48,10 @@ const requireSignin = expressjwt({
 })
 
 const hasAuthorization = (req, res, next) => {
+    console.log("profile Id = " + req.profile._id)
+    console.log("Auth Id = "+req.auth._id)
     const authorized = req.profile && req.auth
-        && (req.profile._id == req.auth._id || req.profile.apply_user_id == req.auth._id)
+        && (req.profile._id == req.auth._id)
     if (!(authorized)) {
         return res.status('403').json({
             error: "User is not authorized"
@@ -55,4 +60,31 @@ const hasAuthorization = (req, res, next) => {
     next()
 }
 
-export default { signin, signout, requireSignin, hasAuthorization }
+const IsAuthorizedToDeleteAppointment = async (req, res, next) => {
+    console.log("profile Id = " + req.profile._id)
+    console.log("Auth Id = "+req.auth._id)
+    try{
+        let appointment = await Appointment.findById(req.profile._id)
+        
+        const authorized = req.profile && req.auth
+            && (appointment.apply_user_id == req.auth._id)
+        if (!(authorized)) {
+            return res.status('403').json({
+                error: "User is not authorized"
+            })
+        }
+
+        
+    }
+    catch(err)
+    {
+        return res.status('403').json({
+            error: "User is not authorized"
+        })
+    }
+
+    next()
+    
+}
+
+export default { signin, signout, requireSignin, hasAuthorization, IsAuthorizedToDeleteAppointment }

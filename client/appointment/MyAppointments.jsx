@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import values from "../lib/Signin.jsx";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -26,7 +27,7 @@ import { Link, useParams } from "react-router-dom";
 //import Link from "@material-ui/core/Link";
 import PropTypes from "prop-types";
 import { create } from "./api-appointment";
-import { list } from "./api-appointment";
+import { list, remove } from "./api-appointment";
 import auth from "../lib/auth-helper.js";
 import DatePicker from "react-datepicker";
 import DateCalendar from "react-calendar";
@@ -57,63 +58,6 @@ import {
   TodayButton,
   ConfirmationDialog,
 } from "@devexpress/dx-react-scheduler-material-ui";
-
-var appointments = [
-  {
-    title: "Website Re-Design Plan",
-    startDate: new Date(2018, 5, 25, 12, 35),
-    endDate: new Date(2018, 5, 25, 15, 0),
-    id: 0,
-    members: [1, 3, 5],
-    location: "Room 1",
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: new Date(2018, 5, 26, 12, 35),
-    endDate: new Date(2018, 5, 26, 15, 0),
-    id: 1,
-    members: [2, 4],
-    location: "Room 2",
-  },
-  {
-    title: "Install New Router in Dev Room",
-    startDate: new Date(2018, 5, 27, 12, 35),
-    endDate: new Date(2018, 5, 27, 15, 0),
-    id: 2,
-    members: [3],
-    location: "Room 3",
-  },
-  {
-    title: "Approve Personal Computer Upgrade Plan",
-    startDate: new Date(2018, 5, 28, 12, 35),
-    endDate: new Date(2018, 5, 28, 15, 0),
-    id: 3,
-    members: [4, 1],
-    location: "Room 4",
-  },
-  {
-    title: "Final Budget Review",
-    startDate: new Date(2018, 5, 29, 12, 35),
-    endDate: new Date(2018, 5, 29, 15, 0),
-    id: 4,
-    members: [5, 1, 3],
-    location: "Room 5",
-  },
-];
-
-const currentDate = "2018-11-01";
-const schedulerData = [
-  {
-    startDate: "2018-11-01T09:45",
-    endDate: "2018-11-01T11:00",
-    title: "Meeting",
-  },
-  {
-    startDate: "2018-11-01T12:00",
-    endDate: "2018-11-01T13:30",
-    title: "Go to a gym",
-  },
-];
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -170,87 +114,61 @@ export default function Appointment() {
 
   const today = new Date();
 
-  console.log(today);
-  // const AppointmentsColl = [
-  //   {
-  //     title: "Website Re-Design Plan",
-  //     startDate: new Date(2018, 5, 25, 12, 35),
-  //     endDate: new Date(2018, 5, 25, 15, 0),
-  //     id: 0,
-  //     members: [1, 3, 5],
-  //     location: "Room 1",
-  //   },
-  //   {
-  //     title: "Book Flights to San Fran for Sales Trip",
-  //     startDate: new Date(2018, 5, 26, 12, 35),
-  //     endDate: new Date(2018, 5, 26, 15, 0),
-  //     id: 1,
-  //     members: [2, 4],
-  //     location: "Room 2",
-  //   },
-  //   {
-  //     title: "Install New Router in Dev Room",
-  //     startDate: new Date(2018, 5, 27, 12, 35),
-  //     endDate: new Date(2018, 5, 27, 15, 0),
-  //     id: 2,
-  //     members: [3],
-  //     location: "Room 3",
-  //   },
-  //   {
-  //     title: "Approve Personal Computer Upgrade Plan",
-  //     startDate: new Date(2018, 5, 28, 12, 35),
-  //     endDate: new Date(2018, 5, 28, 15, 0),
-  //     id: 3,
-  //     members: [4, 1],
-  //     location: "Room 4",
-  //   },
-  //   {
-  //     title: "Final Budget Review",
-  //     startDate: new Date(2018, 5, 29, 12, 35),
-  //     endDate: new Date(2018, 5, 29, 15, 0),
-  //     id: 4,
-  //     members: [5, 1, 3],
-  //     location: "Room 5",
-  //   },
-  // ];
-
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
     list(signal, {
       t: jwt.token,
+      userId: jwt.user._id,
     }).then((data) => {
-      if (data && data.error) {
-        console.log(data.error);
-      } else {
-        var appointmentsCollection = [];
-        data.forEach(function (item) {
-          var appoi = {
-            title: item.apply_user,
-            startDate: new Date(item.appointment_date),
-            endDate: new Date(item.appointment_date),
-            id: item._id,
-          };
-          var hoursToAdd = 4 * 60 * 60 * 1000;
-          appoi.startDate.setTime(appoi.startDate.getTime() + hoursToAdd);
-          hoursToAdd = 5 * 60 * 60 * 1000;
-          appoi.endDate.setTime(appoi.endDate.getTime() + hoursToAdd);
-
-          appointmentsCollection.push(appoi);
-        });
-        setAppointments(appointmentsCollection);
-        console.log(appointmentsCollection);
-      }
+      listCB(data);
     });
     return function cleanup() {
       abortController.abort();
     };
   }, []);
 
-  const commitChanges = (added, changed, deleted) => {
-    console.log(added);
-    console.log(changed);
-    console.log(deleted);
+  const listCB = (data) => {
+    if (data && data.error) {
+      console.log(data.error);
+    } else {
+      var appointmentsCollection = [];
+      data.forEach(function (item) {
+        var appoi = {
+          title: item.apply_user,
+          startDate: new Date(item.appointment_date),
+          endDate: new Date(item.appointment_date),
+          id: item._id,
+        };
+        var hoursToAdd = 15 * 60 * 60 * 1000;
+        appoi.startDate.setTime(appoi.startDate.getTime() + hoursToAdd);
+        hoursToAdd = 16 * 60 * 60 * 1000;
+        appoi.endDate.setTime(appoi.endDate.getTime() + hoursToAdd);
+
+        appointmentsCollection.push(appoi);
+      });
+      setAppointments(appointmentsCollection);
+      console.log(appointmentsCollection);
+    }
+  };
+
+  const deleteCB = (data) => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+    list(signal, {
+      t: jwt.token,
+      userId: jwt.user._id,
+    }).then((data) => {
+      listCB(data);
+    });
+  };
+
+  const commitChanges = (deleted, changed) => {
+    remove(deleted, {
+      t: jwt.token,
+    }).then((data) => {
+      deleteCB(data);
+    });
   };
 
   const classes = useStyles();
