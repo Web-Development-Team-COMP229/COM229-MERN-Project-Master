@@ -135,7 +135,7 @@ export default function Appointment() {
       var appointmentsCollection = [];
       data.forEach(function (item) {
         var appoi = {
-          title: item.apply_user,
+          title: "You have a dental ppointment",
           startDate: new Date(item.appointment_date),
           endDate: new Date(item.appointment_date),
           id: item._id,
