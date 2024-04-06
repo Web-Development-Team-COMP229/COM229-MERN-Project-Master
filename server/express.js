@@ -18,11 +18,12 @@ const CURRENT_WORKING_DIR = process.cwd()
 app.use(cookieParser())
 app.use(compress())
 app.use(helmet())
-var whitelist = ['http://localhost:3000','http://localhost:5173', 'http://127.0.0.1:5173', 'https://com229-mern-project-group4.onrender.com']
+
+var whitelist = ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:4173', 'https://com229-mern-project-group4.onrender.com']
 var corsOptions = {
     credentials: true,
     origin: function(origin, callback) {
-      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ " + origin);
+      
       if (whitelist.indexOf(origin) !== -1 || !origin) {
         callback(null, true)
       } else {
