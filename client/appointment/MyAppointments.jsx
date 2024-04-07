@@ -41,6 +41,8 @@ import ToastMessageGeneral from "../component/modal/ToastMessageGeneral.jsx";
 import { Link as RouterLink } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForward from "@material-ui/icons/ArrowForward";
+import { format } from 'date-fns';
+
 import {
   ViewState,
   EditingState,
@@ -140,11 +142,11 @@ export default function Appointment() {
           endDate: new Date(item.appointment_date),
           id: item._id,
         };
-        var StarthoursToAdd = 15 * 60 * 60 * 1000;
-        appoi.startDate.setTime(appoi.startDate.getTime() + StarthoursToAdd);
-        var EndhoursToAdd = 16 * 60 * 60 * 1000;
+        
+        appoi.startDate.setTime(appoi.startDate.getTime());
+        var EndhoursToAdd = 60 * 60 * 1000;
         appoi.endDate.setTime(appoi.endDate.getTime() + EndhoursToAdd);
-        appoi.title = "Dental Appointment 3:00 PM - 4:00 PM";
+        appoi.title = "Dental Appointment " + format(appoi.startDate, 'kk:mm');
         appointmentsCollection.push(appoi);
       });
       setAppointments(appointmentsCollection);
