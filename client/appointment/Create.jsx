@@ -18,7 +18,7 @@ import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
 import { useNavigate } from "react-router-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
-import './create.css';
+import './Create.css';
 
 const useStyles = makeStyles(theme => ({
     card: {
