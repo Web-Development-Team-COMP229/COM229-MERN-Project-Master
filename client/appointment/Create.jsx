@@ -17,6 +17,9 @@ import ButtonMainTheme from '../component/button/ButtonMainTheme.jsx'
 import ToastMessageGeneral from '../component/modal/ToastMessageGeneral.jsx';
 import { useNavigate } from "react-router-dom";
 
+import "react-datepicker/dist/react-datepicker.css";
+import './create.css';
+
 const useStyles = makeStyles(theme => ({
     card: {
         maxWidth: 600,
@@ -151,11 +154,13 @@ export default function Create() {
         handleClose: PropTypes.func.isRequired,
     };
 
+    
     const [startDate, setStartDate] = useState(
         //setHours(new Date(), 16)
         //console.log("setStartDate")
         
       );
+      const [focus, setFocus] = useState('startDate');
 
 
     return (
@@ -166,8 +171,19 @@ export default function Create() {
                         Create Appointment
                     </Typography>
                     <CardMedia className={classes.media} image={'./Booking.png'}/>
-                    <DateCalendar value={values.appointment_date} onChange={(newValue) => handleChangeDate("appointment_date", newValue)} />
-                                
+                    <DatePicker showTimeSelect
+                        id = "appointment_date"
+                        
+                        selected={startDate} 
+                        onChange={ (date) => {setStartDate(date), handleChangeDate("appointment_date", date)}}
+                        
+                        excludeTimes={[
+                                new Date(new Date().setHours(new Date().getHours(), new Date().getMinutes()))
+                            ]}
+                        dateFormat="d/MMMM/yyyy HH:mm"
+                        focusedInput={focus}
+                        
+                    />            
                 </CardContent>
                 <CardActions>
                     
@@ -188,7 +204,7 @@ export default function Create() {
                         label={"Who"} value={values.apply_user}/>
                     
                     <TextFieldBlue  variant="outlined" fullWidth margin='dense' disabled={true} style={{width: 300}} InputLabelProps={{style:{fontSize: 14}}} 
-                        label={"When"} value={moment(values.appointment_date).format('DD/MMM/YYYY')}/>
+                        label={"When"} value={moment(values.appointment_date).format('DD/MMM/YYYY HH:mm')}/>
                     <hr />
                     <br/>
                     
