@@ -144,7 +144,7 @@ export default function Appointment() {
         appoi.startDate.setTime(appoi.startDate.getTime() + StarthoursToAdd);
         var EndhoursToAdd = 16 * 60 * 60 * 1000;
         appoi.endDate.setTime(appoi.endDate.getTime() + EndhoursToAdd);
-        appoi.title = "Denatal Appointment 3:00 PM - 4:00 PM";
+        appoi.title = "Dental Appointment 3:00 PM - 4:00 PM";
         appointmentsCollection.push(appoi);
       });
       setAppointments(appointmentsCollection);

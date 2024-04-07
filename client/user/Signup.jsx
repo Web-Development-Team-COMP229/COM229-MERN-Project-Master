@@ -69,7 +69,7 @@ export default function Signup() {
   });
   const handleChange = (name) => (event) => {
     if (name == "phone") {
-      if (/^.*([0-9()+-])$/.test(event.target.value)) {
+      if (/^.*([0-9()+-])$/.test(event.target.value) || event.target.value == "") {
         setValues({ ...values, [name]: event.target.value });
       }
     } else {

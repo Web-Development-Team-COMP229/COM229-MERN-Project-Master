@@ -90,7 +90,8 @@ export default function Create() {
 
     const handleClose = () => {
         setOpen(false);
-        navigate("/user/"+ (auth.isAuthenticated()  ? auth.isAuthenticated().user._id : ''));
+        // navigate("/user/"+ (auth.isAuthenticated()  ? auth.isAuthenticated().user._id : ''));
+        navigate("/myappointments")
     };
 
     const handleOpen = () => {
