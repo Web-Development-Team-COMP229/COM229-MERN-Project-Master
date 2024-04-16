@@ -17,6 +17,8 @@ Users will be able to sign in to book an appointment.
   6. Youtube Video for Part 3: https://youtu.be/niKOvGxtU7o 
   7. Youtube Video for Part 4 : https://youtu.be/oMKT7Wkyh2o
   8. Render URL : https://com229-mern-project-group4.onrender.com/signin
+  9. Final Video : https://www.youtube.com/watch?v=zztvgckxvgc
+  10. Final Presentation: https://centennialcollegeedu.sharepoint.com/:p:/s/W24-COMP229-SEC02-Group04/EUhiANBJY3VOuWjzerCMZEgBsMtjDWRoMnZHxHZzKhvGSA?e=Jf3wFk
  
 
 
